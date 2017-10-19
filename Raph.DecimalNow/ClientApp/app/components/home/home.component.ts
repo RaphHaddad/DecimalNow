@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     selector: 'home',
@@ -7,15 +8,14 @@ import { Component } from '@angular/core';
 export class HomeComponent {
     public decimalNow = 0.0;
 
-    constructor() {
-        setTimeout(() => {
+    calcDecimalNow() {
+        Observable.interval(100).subscribe(() => {
             var now = new Date();
             this.decimalNow = this.toDecimalTime(now.getHours(), now.getMinutes(), now.getSeconds());
-        }, 500);
+        });
     }
 
-    private toDecimalTime(hours: number, minutes: number,seconds: number)
-    {
+    private toDecimalTime(hours: number, minutes: number,seconds: number) {
         var dhours = hours * 5 / 12;
         var dminutes = minutes * 1000 / 144 / 1000;
         var dsecond = seconds * 1000 / 864 / 100000;
