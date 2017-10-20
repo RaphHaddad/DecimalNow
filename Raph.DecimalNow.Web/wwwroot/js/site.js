@@ -4,7 +4,10 @@
         var now = new Date();
         var decimalNow = toDecimalTime(now.getHours(), now.getMinutes(), now.getSeconds());
         var decimalString = decimalNow.toString();
-        decimalString = decimalString.slice(0, 1) + ':' + decimalString.slice(2, 4) + ':' + decimalString.slice(4, 6) + '.' + decimalString.slice(7, decimalString.length);
+        decimalString = decimalString.slice(0, 1) + ':' +
+            decimalString.slice(2, 4) + ':' +
+            decimalString.slice(4, 6) + '.' +
+            decimalString.slice(7, decimalString.length);
         var el = document.getElementById("decimalNow");
         el.innerText = decimalString;
     }, 1000);
