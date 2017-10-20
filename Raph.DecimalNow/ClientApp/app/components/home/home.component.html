@@ -3,10 +3,12 @@
 <p>10 hours in a day, each hour has 100 minutes, each minute has 100 seconds</p>
 <h2 class="text-center">Decimal Time Now:</h2>
 <h2 class="text-center">{{ formatDecimalTime(decimalNow) }}</h2>
-<!--<form class="form">
+<form class="form">
+    <p *ngIf="error" class="text-danger">{{ error }}</p>
     <div class="form-group mx-sm-3">
-        <label for="time" class="sr-only">time</label>
-        <input type="time" class="form-control" id="time" placeholder="Time to convert">
+        <label for="inputTime" class="sr-only">time</label>
+        <input type="time" class="form-control" id="time" [(ngModel)]="inputTime" name="inputTime" placeholder="Time to convert">
+        <p>{{ formatDecimalTime(calculatedDecimalTime) }}</p>
+        <button type="submit" (click)="convertInputTime()" class="btn btn-primary">Convert</button>
     </div>
-    <button type="submit" class="btn btn-primary">Convert</button>
-</form>-->
+</form>
