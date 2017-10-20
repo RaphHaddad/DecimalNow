@@ -49,4 +49,11 @@ describe('Home component', () => {
 
         expect(fixture.componentInstance.decimalNow).toEqual(5);
     }));
+
+    it('should format nicely', async(() => {
+        var time = 9.346512;
+        var expected = '9.34.65';
+
+        expect(fixture.componentInstance.formatDecimalTime(time)).toEqual(expected);
+    }));
 });

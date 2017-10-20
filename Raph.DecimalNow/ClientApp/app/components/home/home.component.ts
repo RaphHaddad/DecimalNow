@@ -18,8 +18,15 @@ export class HomeComponent implements OnInit {
             setInterval(() => {
                 var now = new Date();
                 this.toDecimalTime(now.getHours(), now.getMinutes(), now.getSeconds());
-            }, 500);
+            }, 1);
         }
+    }
+
+    public formatDecimalTime(decimalTime: number) {
+        var decimalTimeAsString = decimalTime.toString();
+        return decimalTimeAsString.slice(0, 1) + '.' +
+               decimalTimeAsString.slice(2, 4) + '.' + 
+               decimalTimeAsString.slice(4, 6);
     }
 
     public toDecimalTime(hours: number, minutes: number, seconds: number) {
