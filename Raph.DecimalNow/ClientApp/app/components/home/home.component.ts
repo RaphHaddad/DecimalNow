@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
             var minutes = timeArr[1];
             this.calculatedDecimalTime = this.getDecimalTime(parseInt(hours), parseInt(minutes), 0);
         } else {
-            this.error = "Please input valid time including AM/PM";
+            this.error = "Please input valid time";
         }
     }
 
