@@ -41,11 +41,9 @@ export class HomeComponent implements OnInit {
             return "";
         }
         var decimalTimeAsString = decimalTime.toString();
-        var seconds = parseFloat(decimalTimeAsString.slice(4, 6) + '.' + decimalTimeAsString.slice(6, decimalTimeAsString.length));
-        var roundSeconds = Math.round(seconds);
         return decimalTimeAsString.slice(0, 1) + '.' +
                decimalTimeAsString.slice(2, 4) + '.' + 
-               roundSeconds.toString();
+               decimalTimeAsString.slice(4, 6)
     }
 
     public setDecimalTime(hours: number, minutes: number, seconds: number) {

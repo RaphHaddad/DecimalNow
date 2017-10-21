@@ -57,16 +57,9 @@ describe('Home component', () => {
         expect(fixture.componentInstance.formatDecimalTime(time)).toEqual(expected);
     }));
 
-    it('should format nicely with round up', async(() => {
-        var time = 9.34655;
-        var expected = '9.34.66';
-
-        expect(fixture.componentInstance.formatDecimalTime(time)).toEqual(expected);
-    }));
-
-    it('should format nicely with round down', async(() => {
-        var time = 9.34654;
-        var expected = '9.34.65';
+    it('should use 10s in seconds', async(() => {
+        var time = 9.340654;
+        var expected = '9.34.06';
 
         expect(fixture.componentInstance.formatDecimalTime(time)).toEqual(expected);
     }));
