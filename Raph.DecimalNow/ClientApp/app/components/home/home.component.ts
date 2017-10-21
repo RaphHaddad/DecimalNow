@@ -17,9 +17,9 @@ export class HomeComponent implements OnInit {
     constructor( @Inject(PLATFORM_ID) private platformId: Object) {  }
 
     ngOnInit(): void {
-        var now = new Date();
-        this.setDecimalTime(now.getHours(), now.getMinutes(), now.getSeconds());
         if (isPlatformBrowser(this.platformId)) {
+            var now = new Date();
+            this.setDecimalTime(now.getHours(), now.getMinutes(), now.getSeconds());
             setInterval(() => {
                 var now = new Date();
                 this.setDecimalTime(now.getHours(), now.getMinutes(), now.getSeconds());
