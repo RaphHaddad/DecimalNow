@@ -9,10 +9,13 @@ import { isPlatformBrowser } from '@angular/common';
 
 export class HomeComponent implements OnInit {
 
-    public decimalNow = 0.0;
-    public calculatedDecimalTime = 0.0;
-    public inputTime: string;
+    public decimalNow: string;
+    public inputOutputDecimalTime: string;
+    public inputOutputTime: string;
     public error: string;
+    private inputChanged: string;
+    private inputChangedDecimal = "decimalTime";
+    private inputChangedTime = "time";
 
     constructor( @Inject(PLATFORM_ID) private platformId: Object) {  }
 
@@ -24,30 +27,49 @@ export class HomeComponent implements OnInit {
         }
     }
 
-    public convertInputTime() {
+    public convert() {
         this.error = "";
-        if (this.inputTime) {
-            var timeArr = this.inputTime.split(':');
-            var hours = timeArr[0];
-            var minutes = timeArr[1];
-            this.calculatedDecimalTime = this.getDecimalTime(parseInt(hours), parseInt(minutes), 0);
+        if (this.inputChanged === this.inputChangedDecimal) {
+            this.convertInputToTime();
+        } else if (this.inputChanged === this.inputChangedTime) {
+            this.convertInputToDecimal();
         } else {
-            this.error = "Please input valid time";
+            throw "couldn't detect which input was changed";
         }
     }
 
     public formatDecimalTime(decimalTime: number) {
-        if (decimalTime === 0) {
+        if (!decimalTime) {
             return "";
         }
         var decimalTimeAsString = decimalTime.toString();
         return decimalTimeAsString.slice(0, 1) + '.' +
-               decimalTimeAsString.slice(2, 4) + '.' + 
-               decimalTimeAsString.slice(4, 6)
+            decimalTimeAsString.slice(2, 4) + '.' +
+            decimalTimeAsString.slice(4, 6)
     }
 
     public setDecimalTime(hours: number, minutes: number, seconds: number) {
-        this.decimalNow = this.getDecimalTime(hours, minutes, seconds);
+        this.decimalNow = this.getDecimalTime(hours, minutes, seconds).toString();
+    }
+
+    public decimalTimeInputChanged() {
+        this.inputChanged = this.inputChangedDecimal;
+    }
+
+    public timeInputChanged() {
+        this.inputChanged = this.inputChangedDecimal;
+    }
+
+    private convertInputToTime() {
+        if (this.inputOutputTime) {
+            var timeArr = this.inputOutputTime.split(':');
+            var hours = timeArr[0];
+            var minutes = timeArr[1];
+            this.inputOutputDecimalTime =
+                this.formatDecimalTime(this.getDecimalTime(parseInt(hours), parseInt(minutes), 0));
+        } else {
+            this.error = "Please input valid time";
+        }
     }
 
     private getDecimalTime(hours: number, minutes: number, seconds: number) {
@@ -61,4 +83,6 @@ export class HomeComponent implements OnInit {
         var now = new Date();
         this.setDecimalTime(now.getHours(), now.getMinutes(), now.getSeconds());
     }
+
+    private convertInputToDecimal() { throw new Error("Not implemented"); }
 }
