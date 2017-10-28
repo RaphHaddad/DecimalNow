@@ -21,7 +21,8 @@
                id="time" 
                [(ngModel)]="inputOutputDecimalTime" 
                name="inputOutputDecimalTime" 
-               placeholder="Decimal time to convert">
+               placeholder="Decimal time to convert"
+               (change)="decimalTimeInputChanged()">
         <button type="submit" (click)="convert()" class="btn btn-primary">Convert</button>
     </div>
 </form>

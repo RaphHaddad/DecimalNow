@@ -91,12 +91,93 @@ describe('Home component', () => {
     }));
 
     it('should convert decimal time to time', async(() => {
-        fixture.componentInstance.inputOutputDecimalTime = '1.0.0';
+        fixture.componentInstance.inputOutputDecimalTime = "10.0.0";
         fixture.componentInstance.decimalTimeInputChanged();
 
         fixture.componentInstance.convert();
 
-        expect(fixture.componentInstance.inputOutputTime).toEqual("24");
+        var expected = new Date(2000, 1, 1, 24, 0, 0);
+        expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
+    }));
+
+    it('should convert decimal time to time for half day', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "5.0.0";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var expected = new Date(2000, 1, 1, 12, 0, 0);
+        expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
+    }));
+
+    it('should convert decimal time to time for whole day in minutes', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "0.1000.0";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var expected = new Date(2000, 1, 1, 0, 1440, 0);
+        expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
+    }));
+
+    it('should convert decimal time to time for half day in minutes', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "0.500.0";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var expected = new Date(2000, 1, 1, 0, 720, 0);
+        expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
+    }));
+
+    it('should convert decimal time to time for whole day in seconds', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "0.0.100000";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var expected = new Date(2000, 1, 1, 0, 0, 86400);
+        expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
+    }));
+
+    it('should convert decimal time to time for half day in seconds', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "0.0.50000";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var expected = new Date(2000, 1, 1, 0, 0, 43200);
+        expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
+    }));
+
+    it('should convert decimal time to time for quarter day', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "2.50.0";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var expected = new Date(2000, 1, 1, 6, 0, 0);
+        expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
+    }));
+
+    it('should convert decimal time to time for 4:30PM', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "6.88.00";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var expected = new Date(2000, 1, 1, 16, 30, 0);
+        expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
+    }));
+
+    it('should convert decimal time to time for 3:14PM', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "6.35.00";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var expected = new Date(2000, 1, 1, 15, 14, 0);
+        expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
     }));
 
     it('should validate decimal time format when convert', async(() => {

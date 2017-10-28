@@ -29,10 +29,10 @@ export class HomeComponent implements OnInit {
 
     public convert() {
         this.error = "";
-        if (this.inputChanged === this.inputChangedDecimal) {
+        if (this.inputChanged === this.inputChangedTime) {
+            this.convertInputToDecimalTime();
+        } else if (this.inputChanged === this.inputChangedDecimal) {
             this.convertInputToTime();
-        } else if (this.inputChanged === this.inputChangedTime) {
-            this.convertInputToDecimal();
         } else {
             throw "couldn't detect which input was changed";
         }
@@ -57,10 +57,10 @@ export class HomeComponent implements OnInit {
     }
 
     public timeInputChanged() {
-        this.inputChanged = this.inputChangedDecimal;
+        this.inputChanged = this.inputChangedTime;
     }
 
-    private convertInputToTime() {
+    private convertInputToDecimalTime() {
         if (this.inputOutputTime) {
             var timeArr = this.inputOutputTime.split(':');
             var hours = timeArr[0];
@@ -75,8 +75,15 @@ export class HomeComponent implements OnInit {
     private getDecimalTime(hours: number, minutes: number, seconds: number) {
         var dhours = hours * 5 / 12;
         var dminutes = minutes * 1000 / 144 / 1000;
-        var dsecond = seconds * 1000 / 864 / 10000;
-        return dhours + dminutes + dsecond;
+        var dseconds = seconds * 1000 / 864 / 10000;
+        return dhours + dminutes + dseconds;
+    }
+
+    private getTime(dhours: number, dminutes: number, dseconds: number) {
+        var hours = dhours / (5 / 12);
+        var minutes = dminutes / (100000 / 144 / 1000);
+        var seconds = dseconds / (1000 / 864);
+        return new Date(2000, 1, 1, hours, minutes, seconds).toLocaleTimeString();
     }
 
     private setDecimalTimeNow() {
@@ -84,5 +91,12 @@ export class HomeComponent implements OnInit {
         this.setDecimalTime(now.getHours(), now.getMinutes(), now.getSeconds());
     }
 
-    private convertInputToDecimal() { throw new Error("Not implemented"); }
+    private convertInputToTime() {
+        var splitedDecimalTime = this.inputOutputDecimalTime.split('.');
+        var dhours = parseInt(splitedDecimalTime[0]);
+        var dminutes = parseInt(splitedDecimalTime[1]);
+        var dseconds = parseInt(splitedDecimalTime[2]);
+
+        this.inputOutputTime = this.getTime(dhours, dminutes, dseconds);
+    }
 }
