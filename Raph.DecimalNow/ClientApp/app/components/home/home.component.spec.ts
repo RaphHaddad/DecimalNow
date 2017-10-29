@@ -15,55 +15,21 @@ describe('Home component', () => {
     });
 
     it('24 hours should return 1 decimal day (10 decimal hours)', async(() => {
-        fixture.componentInstance.inputOutputDecimalTime = new Date(1980, 6, 6, 24, 0, 0).toString();
+        fixture.componentInstance.inputOutputTime = new Date(1980, 6, 6, 24, 0, 0).toLocaleTimeString();
+        fixture.componentInstance.timeInputChanged();
 
-        fixture.componentInstance.setDecimalTime(24, 0, 0);
+        fixture.componentInstance.convert();
 
-        expect(fixture.componentInstance.decimalNow).toEqual("10");
+        expect(fixture.componentInstance.inputOutputDecimalTime).toEqual("00.00");
     }));
 
     it('12 hours should return 0.5 decimal day (5 decimal hours)', async(() => {
-        fixture.componentInstance.setDecimalTime(12, 0, 0);
+        fixture.componentInstance.inputOutputTime = new Date(1980, 6, 6, 12, 0, 0).toLocaleTimeString();
+        fixture.componentInstance.timeInputChanged();
 
-        expect(fixture.componentInstance.decimalNow).toEqual("5");
-    }));
+        fixture.componentInstance.convert();
 
-    it('1440 minutes should return 1 decimal day (10 decimal hours)', async(() => {
-        fixture.componentInstance.setDecimalTime(0, 1440, 0);
-
-        expect(fixture.componentInstance.decimalNow).toEqual("10");
-    }));
-
-    it('720 minutes should return 5 decimal hours', async(() => {
-        fixture.componentInstance.setDecimalTime(0, 720, 0);
-
-        expect(fixture.componentInstance.decimalNow).toEqual("5");
-    }));
-
-    it('86400 seconds should return 10 decimal hours', async(() => {
-        fixture.componentInstance.setDecimalTime(0, 0, 86400);
-
-        expect(fixture.componentInstance.decimalNow).toEqual("10");
-    }));
-
-    it('43200 seconds should return 5 decimal hours', async(() => {
-        fixture.componentInstance.setDecimalTime(0, 0, 43200);
-
-        expect(fixture.componentInstance.decimalNow).toEqual("5");
-    }));
-
-    it('should format nicely', async(() => {
-        var time = 9.346512;
-        var expected = '9.34.65';
-
-        expect(fixture.componentInstance.formatDecimalTime(time)).toEqual(expected);
-    }));
-
-    it('should use 10s in seconds', async(() => {
-        var time = 9.340654;
-        var expected = '9.34.06';
-
-        expect(fixture.componentInstance.formatDecimalTime(time)).toEqual(expected);
+        expect(fixture.componentInstance.inputOutputDecimalTime).toEqual("5.00");
     }));
 
     it('should convert inputed time AM', async(() => {

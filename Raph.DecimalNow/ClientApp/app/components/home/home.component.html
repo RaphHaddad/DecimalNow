@@ -2,7 +2,7 @@
 <p>For those of us who want decimal time</p>
 <p>10 hours in a day, each hour has 100 minutes, each minute has 100 seconds</p>
 <h2 class="text-center">Decimal Time Now:</h2>
-<h2 class="text-center">{{ formatDecimalTime(decimalNow) }}</h2>
+<h2 class="text-center">{{ decimalNow }}</h2>
 <form class="form">
     <div *ngIf="errors">
         <p class="text-danger" *ngFor="let error of errors">{{ error }}<br/>
