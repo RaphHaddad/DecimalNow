@@ -43,9 +43,13 @@ export class HomeComponent implements OnInit {
             return "";
         }
         var decimalTimeAsString = decimalTime.toString();
+        var secondsStr = decimalTimeAsString.slice(4, 6);
+        if (secondsStr.length < 2) {
+            secondsStr += '0';
+        }
         return decimalTimeAsString.slice(0, 1) + '.' +
             decimalTimeAsString.slice(2, 4) + '.' +
-            decimalTimeAsString.slice(4, 6);
+            secondsStr;
     }
 
     public setDecimalTime(hours: number, minutes: number, seconds: number) {
@@ -121,7 +125,7 @@ export class HomeComponent implements OnInit {
             } 
         } catch (error) {
             this.errors.push(
-                "You must enter decimal time in a proper format. See example above (decimal seconds are optional");
+                "You must enter decimal time in a proper format. See example above (decimal seconds are optional)");
         }
     }
 }

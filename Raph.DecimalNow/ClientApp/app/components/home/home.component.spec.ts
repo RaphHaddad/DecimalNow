@@ -291,6 +291,15 @@ describe('Home component', () => {
         expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
     }));
 
+    it('should append zero to decimal seconds', async(() => {
+        fixture.componentInstance.inputOutputTime = new Date(2000, 1, 1, 19, 30, 0).toLocaleTimeString();
+        fixture.componentInstance.timeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        expect(fixture.componentInstance.inputOutputDecimalTime).toEqual("8.12.50");
+    }));
+
     it('should error on first attempt to convert', async(() => {
         fixture.componentInstance.convert();
 
