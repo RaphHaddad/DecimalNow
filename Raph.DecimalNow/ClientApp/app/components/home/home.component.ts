@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
     public decimalNow: string;
     public inputOutputDecimalTime: string;
     public inputOutputTime: string;
-    public error: string;
+    public errors: string[];
     private inputChanged: string;
     private inputChangedDecimal = "decimalTime";
     private inputChangedTime = "time";
@@ -28,13 +28,13 @@ export class HomeComponent implements OnInit {
     }
 
     public convert() {
-        this.error = "";
+        this.errors = [];
         if (this.inputChanged === this.inputChangedTime) {
             this.convertInputToDecimalTime();
         } else if (this.inputChanged === this.inputChangedDecimal) {
             this.convertInputToTime();
         } else {
-            throw "couldn't detect which input was changed";
+            this.errors.push("you must change one of the inputs");
         }
     }
 
@@ -68,7 +68,7 @@ export class HomeComponent implements OnInit {
             this.inputOutputDecimalTime =
                 this.formatDecimalTime(this.getDecimalTime(parseInt(hours), parseInt(minutes), 0));
         } else {
-            this.error = "Please input valid time";
+            this.errors.push("Please input valid time");
         }
     }
 
@@ -92,11 +92,36 @@ export class HomeComponent implements OnInit {
     }
 
     private convertInputToTime() {
-        var splitedDecimalTime = this.inputOutputDecimalTime.split('.');
-        var dhours = parseInt(splitedDecimalTime[0]);
-        var dminutes = parseInt(splitedDecimalTime[1]);
-        var dseconds = parseInt(splitedDecimalTime[2]);
+        try {
+            var splitedDecimalTime = this.inputOutputDecimalTime.split('.');
+            var dhours = parseInt(splitedDecimalTime[0]);
+            var dminutesStr = splitedDecimalTime[1];
+            var dminutes = parseInt(dminutesStr);
+            var dsecondsStr = splitedDecimalTime[2];
+            var dseconds = parseInt(dsecondsStr);
+            if (dminutesStr.length !== 2) {
+                this.errors.push("Decimal minutes should be two digits. Example: '00', '05' or '20'");
+            } else if (dminutes < 0 || dminutes >= 100) {
+                this.errors.push("Decimal minutes should be between 0 and 99 inclussive");
+            }
 
-        this.inputOutputTime = this.getTime(dhours, dminutes, dseconds);
+            if (dsecondsStr && (dsecondsStr.length !== 2)) {
+                this.errors.push("Decimal seconds should be two digits. Example: '00', '05' or '20'");
+            } else if (dsecondsStr && (dseconds < 0 || dseconds >= 100)) {
+                this.errors.push("Decimal seconds should be between 0 and 99 inclussive");
+            }
+            else if (!dsecondsStr) {
+                dseconds = 0;
+            }
+            if (dhours < 0 || dhours > 10) {
+                this.errors.push("Decimal hours should be between 0 and 10 inclussive");
+            }
+            if (this.errors.length <= 0) {
+                this.inputOutputTime = this.getTime(dhours, dminutes, dseconds);
+            } 
+        } catch (error) {
+            this.errors.push(
+                "You must enter decimal time in a proper format. See example above (decimal seconds are optional");
+        }
     }
 }

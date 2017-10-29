@@ -91,7 +91,7 @@ describe('Home component', () => {
     }));
 
     it('should convert decimal time to time', async(() => {
-        fixture.componentInstance.inputOutputDecimalTime = "10.0.0";
+        fixture.componentInstance.inputOutputDecimalTime = "10.00.00";
         fixture.componentInstance.decimalTimeInputChanged();
 
         fixture.componentInstance.convert();
@@ -101,7 +101,7 @@ describe('Home component', () => {
     }));
 
     it('should convert decimal time to time for half day', async(() => {
-        fixture.componentInstance.inputOutputDecimalTime = "5.0.0";
+        fixture.componentInstance.inputOutputDecimalTime = "5.00.00";
         fixture.componentInstance.decimalTimeInputChanged();
 
         fixture.componentInstance.convert();
@@ -120,18 +120,18 @@ describe('Home component', () => {
         expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
     }));
 
-    it('should convert decimal time to time for 60 seconds', async(() => {
-        fixture.componentInstance.inputOutputDecimalTime = "0.0.100";
+    it('should convert decimal time to time for fourth of a minute', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "0.00.25";
         fixture.componentInstance.decimalTimeInputChanged();
 
         fixture.componentInstance.convert();
 
-        var expected = new Date(2000, 1, 1, 0, 0, 60);
+        var expected = new Date(2000, 1, 1, 0, 0, 15);
         expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
     }));
 
     it('should convert decimal time to time for 30 seconds', async(() => {
-        fixture.componentInstance.inputOutputDecimalTime = "0.0.50";
+        fixture.componentInstance.inputOutputDecimalTime = "0.00.50";
         fixture.componentInstance.decimalTimeInputChanged();
 
         fixture.componentInstance.convert();
@@ -141,7 +141,7 @@ describe('Home component', () => {
     }));
 
     it('should convert decimal time to time for quarter day', async(() => {
-        fixture.componentInstance.inputOutputDecimalTime = "2.50.0";
+        fixture.componentInstance.inputOutputDecimalTime = "2.50.00";
         fixture.componentInstance.decimalTimeInputChanged();
 
         fixture.componentInstance.convert();
@@ -186,6 +186,115 @@ describe('Home component', () => {
 
         fixture.componentInstance.convert();
 
-        //expect(fixture.componentInstance.error).toEqual(expected.toLocaleTimeString());
+        var hasError = fixture.componentInstance.errors.length > 0;
+        expect(hasError).toBe(false);
+    }));
+
+    it('should error decimal time format when hour greater than 10', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "11.35";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var hasError = fixture.componentInstance.errors.length > 0;
+        expect(hasError).toBe(true);
+    }));
+
+    it('should error decimal time format when hour less than 0', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "-1.35";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var hasError = fixture.componentInstance.errors.length > 0;
+        expect(hasError).toBe(true);
+    }));
+
+    it('should error decimal time format when minute is more than 99', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "1.100";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var hasError = fixture.componentInstance.errors.length > 0;
+        expect(hasError).toBe(true);
+    }));
+
+    it('should error decimal time format when minute is less than 0', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "1.-1";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var hasError = fixture.componentInstance.errors.length > 0;
+        expect(hasError).toBe(true);
+    }));
+
+    it('should error decimal time format when minute is not two digits', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "1.5";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var hasExplanation = fixture.componentInstance.errors.filter(x => x.includes("two digits")).length > 0;
+        expect(hasExplanation).toBe(true);
+    }));
+
+
+    it('should error decimal time format when second is more than 99', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "1.10.100";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var hasError = fixture.componentInstance.errors.length > 0;
+        expect(hasError).toBe(true);
+    }));
+
+    it('should error decimal time format when second is less than 0', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "1.10.-1";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var hasError = fixture.componentInstance.errors.length > 0;
+        expect(hasError).toBe(true);
+    }));
+
+    it('should validate decimal time format when second is 00', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "1.10.00";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var hasError = fixture.componentInstance.errors.length > 0;
+        expect(hasError).toBe(false);
+    }));
+
+    it('should error decimal time format when second is not two digits', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "1.50.4";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var hasExplanation = fixture.componentInstance.errors.filter(x => x.includes("two digits")).length > 0;
+        expect(hasExplanation).toBe(true);
+    }));
+
+    it('should calculate valid date if only decimal hours and decimal minutes are given', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "7.98";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var expected = new Date(2000, 1, 1, 19, 9, 7);
+        expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
+    }));
+
+    it('should error on first attempt to convert', async(() => {
+        fixture.componentInstance.convert();
+
+        var hasExplanation = fixture.componentInstance.errors.filter(x => x.includes("must change one of the inputs")).length > 0;
+        expect(hasExplanation).toBe(true);
     }));
 });
