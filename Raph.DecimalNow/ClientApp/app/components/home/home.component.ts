@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
         var decimalTimeAsString = decimalTime.toString();
         return decimalTimeAsString.slice(0, 1) + '.' +
             decimalTimeAsString.slice(2, 4) + '.' +
-            decimalTimeAsString.slice(4, 6)
+            decimalTimeAsString.slice(4, 6);
     }
 
     public setDecimalTime(hours: number, minutes: number, seconds: number) {
@@ -80,10 +80,10 @@ export class HomeComponent implements OnInit {
     }
 
     private getTime(dhours: number, dminutes: number, dseconds: number) {
-        var hours = dhours / (5 / 12);
-        var minutes = dminutes / (100000 / 144 / 1000);
-        var seconds = dseconds / (1000 / 864);
-        return new Date(2000, 1, 1, hours, minutes, seconds).toLocaleTimeString();
+        var hours = (dhours * 8640);
+        var minutes = dminutes * (864/10);
+        var seconds = (dseconds * 60) / 100;
+        return new Date(2000, 1, 1, 0, 0, seconds + hours + minutes).toLocaleTimeString();
     }
 
     private setDecimalTimeNow() {

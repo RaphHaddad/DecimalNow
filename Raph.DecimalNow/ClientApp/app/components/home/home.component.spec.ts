@@ -110,43 +110,33 @@ describe('Home component', () => {
         expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
     }));
 
-    it('should convert decimal time to time for whole day in minutes', async(() => {
-        fixture.componentInstance.inputOutputDecimalTime = "0.1000.0";
+    it('should convert decimal time to time for fifth of a day', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "2.00.00";
         fixture.componentInstance.decimalTimeInputChanged();
 
         fixture.componentInstance.convert();
 
-        var expected = new Date(2000, 1, 1, 0, 1440, 0);
+        var expected = new Date(2000, 0, 0, 4, 48, 0);
         expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
     }));
 
-    it('should convert decimal time to time for half day in minutes', async(() => {
-        fixture.componentInstance.inputOutputDecimalTime = "0.500.0";
+    it('should convert decimal time to time for 60 seconds', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "0.0.100";
         fixture.componentInstance.decimalTimeInputChanged();
 
         fixture.componentInstance.convert();
 
-        var expected = new Date(2000, 1, 1, 0, 720, 0);
+        var expected = new Date(2000, 1, 1, 0, 0, 60);
         expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
     }));
 
-    it('should convert decimal time to time for whole day in seconds', async(() => {
-        fixture.componentInstance.inputOutputDecimalTime = "0.0.100000";
+    it('should convert decimal time to time for 30 seconds', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "0.0.50";
         fixture.componentInstance.decimalTimeInputChanged();
 
         fixture.componentInstance.convert();
 
-        var expected = new Date(2000, 1, 1, 0, 0, 86400);
-        expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
-    }));
-
-    it('should convert decimal time to time for half day in seconds', async(() => {
-        fixture.componentInstance.inputOutputDecimalTime = "0.0.50000";
-        fixture.componentInstance.decimalTimeInputChanged();
-
-        fixture.componentInstance.convert();
-
-        var expected = new Date(2000, 1, 1, 0, 0, 43200);
+        var expected = new Date(2000, 1, 1, 0, 0, 30);
         expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
     }));
 
@@ -166,7 +156,7 @@ describe('Home component', () => {
 
         fixture.componentInstance.convert();
 
-        var expected = new Date(2000, 1, 1, 16, 30, 0);
+        var expected = new Date(2000, 1, 1, 16, 30, 43);
         expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
     }));
 
@@ -176,11 +166,26 @@ describe('Home component', () => {
 
         fixture.componentInstance.convert();
 
-        var expected = new Date(2000, 1, 1, 15, 14, 0);
+        var expected = new Date(2000, 1, 1, 15, 14, 24);
         expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
     }));
 
-    it('should validate decimal time format when convert', async(() => {
-        expect(true).toBeFalsy();
+    it('should convert decimal time to time for 7:09PM', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "7.98.00";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        var expected = new Date(2000, 1, 1, 19, 9, 7);
+        expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
+    }));
+
+    it('should validate decimal time format when only minute', async(() => {
+        fixture.componentInstance.inputOutputDecimalTime = "6.35";
+        fixture.componentInstance.decimalTimeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        //expect(fixture.componentInstance.error).toEqual(expected.toLocaleTimeString());
     }));
 });
