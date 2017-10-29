@@ -100,7 +100,7 @@ export class HomeComponent implements OnInit {
         var hours = (dhours * 8640);
         var minutes = dminutes * (864/10);
         var seconds = (dseconds * 60) / 100;
-        return new Date(2000, 1, 1, 0, 0, seconds + hours + minutes).toLocaleTimeString();
+        return new Date(2000, 1, 1, 0, 0, seconds + hours + minutes).toLocaleTimeString('en-GB');
     }
 
     private setDecimalTimeNow() {
