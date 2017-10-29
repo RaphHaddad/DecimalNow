@@ -150,6 +150,15 @@ describe('Home component', () => {
         expect(fixture.componentInstance.inputOutputTime).toEqual(expected.toLocaleTimeString());
     }));
 
+    it('should convert time to decimal time for quarter day', async(() => {
+        fixture.componentInstance.inputOutputTime = new Date(2000, 1, 1, 6, 0, 0).toLocaleTimeString();
+        fixture.componentInstance.timeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        expect(fixture.componentInstance.inputOutputDecimalTime).toEqual("2.50");
+    }));
+
     it('should convert decimal time to time for 4:30PM', async(() => {
         fixture.componentInstance.inputOutputDecimalTime = "6.88.00";
         fixture.componentInstance.decimalTimeInputChanged();
@@ -298,6 +307,15 @@ describe('Home component', () => {
         fixture.componentInstance.convert();
 
         expect(fixture.componentInstance.inputOutputDecimalTime).toEqual("8.12.50");
+    }));
+
+    it('should convert 2:24:00 AM to 1.00', async(() => {
+        fixture.componentInstance.inputOutputTime = new Date(2000, 1, 1, 2, 24, 0).toLocaleTimeString();
+        fixture.componentInstance.timeInputChanged();
+
+        fixture.componentInstance.convert();
+
+        expect(fixture.componentInstance.inputOutputDecimalTime).toEqual("1.00");
     }));
 
     it('should error on first attempt to convert', async(() => {

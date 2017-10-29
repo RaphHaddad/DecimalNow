@@ -43,6 +43,13 @@ export class HomeComponent implements OnInit {
             return "";
         }
         var decimalTimeAsString = decimalTime.toString();
+        if (decimalTimeAsString.length === 3) {
+            return decimalTimeAsString.slice(0, 1) + '.' +
+                decimalTimeAsString.slice(2, 3) + '0';
+        }
+        if (decimalTimeAsString.length === 1) {
+            return decimalTimeAsString + '.00';
+        }
         var secondsStr = decimalTimeAsString.slice(4, 6);
         if (secondsStr.length < 2) {
             secondsStr += '0';
